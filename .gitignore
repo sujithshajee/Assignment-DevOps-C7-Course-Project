@@ -1,0 +1,5 @@
+*/.terraform/
+*.terraform*
+*.tfstate*
+*/ansible-playbooks/inventory.ini
+*/.DS_Store
