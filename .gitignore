@@ -3,3 +3,4 @@
 *.tfstate*
 */ansible-playbooks/inventory.ini
 */.DS_Store
+*/*.pem

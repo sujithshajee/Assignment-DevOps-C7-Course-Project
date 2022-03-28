@@ -3,21 +3,10 @@
 ####################################################################################################
 
 variable "AWS_ACCESS_KEY" {
-  default = "AKIAUCWFTZRGQDQGRSWU"
 }
 
 variable "AWS_SECRET_KEY" {
-  default = "HX4iEf6u9SOmfyT9QyhYpzc3fo7dyG5Fl8oJlCRx"
 }
-
-# upgrad
-# variable "AWS_ACCESS_KEY" {
-#   default = "AKIA5JY3JAA33IS6X56H"
-# }
-
-# variable "AWS_SECRET_KEY" {
-#   default = "Udb8K5VxirV0r4LB/PH5WRkxNgEISSMomjuYoDZ6"
-# }
 
 variable "AMIS" {
   type = map(string)
