@@ -46,7 +46,7 @@ Note the output variables at the end of the script execution
 ## What is not covered in Automation
 - Jenkins setup for pipeline is not covered in automation. Follow below steps to complete the setup.
 - Creating user with ecr access
-- Configure awscli on app-server with ecr access user
+- Install awscli on app-host and run aws configure to save credentials to authenticate ECR
 
 ## How to setup Jenkins
 
@@ -54,10 +54,10 @@ Note the output variables at the end of the script execution
     - Use access credentials with ecr access
 - Access Jenkins using the URL: http://<<lb_dns_name>>/jenkins
 - Get the initial setup password from Jenkins instance at location /var/lib/jenkins/secrets/initialAdminPassword
-    - ssh -i terraform-pem ubuntu@<bastion_public_ip> ssh jenkinsserver 
+    - ssh -i terraform-key.pem ubuntu@<bastion_public_ip> ssh jenkinsserver 
     - sudo cat /var/lib/jenkins/secrets/initialAdminPassword 
 - Follow instructions to setup Jenkins instance and create first user
-- Navigate to Manage Jenkins and install plugins docker-pipeline and Amazon ECR
+- Navigate to Manage Jenkins and install plugins ssh Agent, docker-pipeline and Amazon ECR
 - Follow the link for instructions to create your first pipeline https://geekflare.com/create-jenkins-pipeline/
     - Copy the pipeline script from Jenkinsfile in the repo to set up the pipeline
     - Ensure to update the below lines before execution in the script

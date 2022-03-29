@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy image') {
             steps {
                 sshagent(credentials: ['ssh-credentials-id']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu appserver sudo su && docker stop appserver || true && docker rm appserver || true && docker system prune -af || true && docker login --username AWS -p $(aws ecr get-login-password --region us-east-1) ' + registry + ' && docker run -p 8080:8081 --name app-server -d ' + registry + '/app:latest'
+                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu appserver sudo su && docker stop appserver || true && docker rm appserver || true && docker system prune -af || true && docker run -p 8080:8081 --name app-server -d ' + registry + '/app:latest'
                 }
             }
         }
