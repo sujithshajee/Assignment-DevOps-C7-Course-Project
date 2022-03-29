@@ -7,17 +7,14 @@
 
   - name: Install list of packages
     apt:
-      name: "{{ item }}"
+      name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common', 'awscli']
       state: present
-      update_cache: yes
-    with_items:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg-agent 
-      - software-properties-common
     retries: 3
-    delay: 5   
+    delay: 5
+
+  - name: Pause for 5 minutes to build app cache
+    pause:
+      minutes: 2  
 
   - name: Add Docker GPG key
     apt_key: url=https://download.docker.com/linux/ubuntu/gpg
@@ -30,12 +27,7 @@
 
   - name: Install list of packages
     apt:
-      name: "{{ item }}"
+      name: ['docker-ce','docker-ce-cli', 'containerd.io']
       state: present
-      update_cache: yes
-    with_items:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
     retries: 3
     delay: 5      

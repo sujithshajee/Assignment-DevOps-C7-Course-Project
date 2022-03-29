@@ -1,7 +1,7 @@
 resource "aws_lb" "assignment" {
   name               = "assignment"
   internal           = false
-  subnets            = [aws_subnet.main-public-1.id,aws_subnet.main-public-2.id]
+  subnets            = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
   load_balancer_type = "application"
   security_groups    = [aws_security_group.public-web-sg.id] #,aws_security_group.private-sg.id
 }
@@ -59,7 +59,7 @@ resource "aws_lb_target_group" "assignment-jenkins-target-group" {
   target_type          = "ip"
   vpc_id               = aws_vpc.main.id
   deregistration_delay = "30"
-  depends_on = [aws_lb.assignment]
+  depends_on           = [aws_lb.assignment]
 }
 
 resource "aws_lb_target_group" "assignment-app-target-group" {
@@ -69,7 +69,7 @@ resource "aws_lb_target_group" "assignment-app-target-group" {
   target_type          = "ip"
   vpc_id               = aws_vpc.main.id
   deregistration_delay = "30"
-  depends_on = [aws_lb.assignment]
+  depends_on           = [aws_lb.assignment]
 }
 
 

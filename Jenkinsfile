@@ -1,7 +1,7 @@
 /* groovylint-disable CompileStatic, GStringExpressionWithinString */
 pipeline {
     environment {
-        registry = '280661052493.dkr.ecr.us-east-1.amazonaws.com/app'
+        registry = '280661052493.dkr.ecr.us-east-1.amazonaws.com'
         registryCredential = 'AWS_JENKINS_CREDENTIAL'
     }
     agent any
@@ -14,8 +14,8 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app_build_number = docker.build(registry + ":$BUILD_NUMBER")
-                    app_latest = docker.build(registry + ":latest")
+                    app_build_number = docker.build(registry + "/app:$BUILD_NUMBER")
+                    app_latest = docker.build(registry + '/app:latest')
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     /* groovylint-disable-next-line NestedBlockDepth */
-                    docker.withRegistry('https://' + registry, 'ecr:us-east-1:' + registryCredential) {
+                    docker.withRegistry('https://' + registry +'/app', 'ecr:us-east-1:' + registryCredential) {
                         app_build_number.push()
                         app_latest.push()
                     }
@@ -32,8 +32,9 @@ pipeline {
         }
         stage('Deploy image') {
             steps {
-                sh 'chmod +x /tmp/scripts/deployImage.sh'
-                sh 'deployImage.sh'
+                sshagent(credentials: ['ssh-credentials-id']) {
+                    sh 'ssh -o StrictHostKeyChecking=no -l ubuntu appserver sudo su && docker stop appserver || true && docker rm appserver || true && docker system prune -af || true && docker login --username AWS -p $(aws ecr get-login-password --region us-east-1) ' + registry + ' && docker run -p 8080:8081 --name app-server -d ' + registry + '/app:latest'
+                }
             }
         }
     }

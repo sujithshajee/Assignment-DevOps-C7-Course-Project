@@ -4,3 +4,4 @@
 */ansible-playbooks/inventory.ini
 */.DS_Store
 */*.pem
+*/config/*

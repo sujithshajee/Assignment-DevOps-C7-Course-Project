@@ -11,32 +11,32 @@
 
 output "linux-instance-public-ip" {
   description = "The public IP of linux server"
-  value = aws_instance.linux-instance.*.public_ip[0]
+  value       = aws_instance.linux-instance.*.public_ip[0]
 }
 
 output "bastion-instance-public-ip" {
   description = "The public IP of bastion server"
-  value = aws_instance.bastion-instance.*.public_ip[0]
+  value       = aws_instance.bastion-instance.*.public_ip[0]
 }
 
 output "bastion-instance-private-ip" {
   description = "The private IP of bastion server"
-  value = aws_instance.bastion-instance.*.private_ip[0]
+  value       = aws_instance.bastion-instance.*.private_ip[0]
 }
 
 output "jenkins-instance-public-ip" {
   description = "The public IP of jenkins server"
-  value = aws_instance.jenkins-instance.*.private_ip[0]
+  value       = aws_instance.jenkins-instance.*.private_ip[0]
 }
 
 output "app-instance-private-ip" {
   description = "The private IP of app server"
-  value = aws_instance.app-instance.*.private_ip[0]
+  value       = aws_instance.app-instance.*.private_ip[0]
 }
 
 output "assignment-s3-bucket-name" {
   description = "S3 bucket ID"
-  value = aws_s3_bucket.assignement_s3_bucket.bucket_domain_name
+  value       = aws_s3_bucket.assignement_s3_bucket.bucket_domain_name
 }
 
 output "vpc_id" {

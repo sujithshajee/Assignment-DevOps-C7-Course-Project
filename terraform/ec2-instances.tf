@@ -93,11 +93,11 @@ resource "aws_instance" "jenkins-instance" {
   key_name               = var.KEY_NAME
   vpc_security_group_ids = [aws_security_group.private-sg.id]
   subnet_id              = aws_subnet.main-private-2.id
-  iam_instance_profile   = aws_iam_instance_profile.profile.name
+  iam_instance_profile   = aws_iam_instance_profile.ecrprofile.name
   tags = {
     Name = "jenkins-instance"
   }
-  
+
 }
 
 ####################################################################################################
@@ -110,7 +110,7 @@ resource "aws_instance" "app-instance" {
   key_name               = var.KEY_NAME
   vpc_security_group_ids = [aws_security_group.public-web-sg.id]
   subnet_id              = aws_subnet.main-private-1.id
-  iam_instance_profile   = aws_iam_instance_profile.profile.name
+  iam_instance_profile   = aws_iam_instance_profile.ecrprofile.name
   tags = {
     Name = "app-instance"
   }

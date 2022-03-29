@@ -1,60 +1,50 @@
-resource "aws_iam_role" "role" {
-  name               = "ec2-ecr-role"
-  assume_role_policy = <<EOF
+resource "aws_iam_role" "ecrrole" {
+  name = "ec2-ecr-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ecrprofile" {
+  name = "ec2-instance-profile"
+  role = aws_iam_role.ecrrole.name
+}
+
+resource "aws_iam_role_policy_attachment" "test" {
+  role       = aws_iam_role.ecrrole.name
+  policy_arn = aws_iam_policy.ecrpolicy.arn
+}
+
+resource "aws_iam_policy" "ecrpolicy" {
+  name        = "ec2-instance-pulls-from-ecr"
+  description = "EC2 instance can pull from ECR"
+
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Principal": {
-        "Service": ["ec2.amazonaws.com"]
-      },
-      "Action": "sts:AssumeRole"
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+      ],
+      "Resource": "*"
     }
   ]
 }
 EOF
-
 }
 
-resource "aws_iam_policy" "policy" {
-  name = "ec2-ecr-access-policy"
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ecr:*",
-                "cloudtrail:LookupEvents"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:CreateServiceLinkedRole"
-            ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "iam:AWSServiceName": [
-                        "replication.ecr.amazonaws.com"
-                    ]
-                }
-            }
-        }
-    ]
-})
-}
-
-resource "aws_iam_policy_attachment" "attach" {
-  name       = "ec2-attach"
-  roles      = ["${aws_iam_role.role.name}"]
-  policy_arn = "${aws_iam_policy.policy.arn}"
-}
-
-resource "aws_iam_instance_profile" "profile" {
-  name = "ec2-instance-profile"
-  role = aws_iam_role.role.name
-}

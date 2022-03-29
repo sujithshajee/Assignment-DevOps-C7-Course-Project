@@ -29,7 +29,7 @@ ${aws_instance.app-instance.*.private_ip[0]}
 }
 
 resource "null_resource" "ansible-run" {
-  depends_on = [aws_instance.bastion-instance] 
+  depends_on = [aws_instance.bastion-instance]
   connection {
     type        = "ssh"
     user        = "ubuntu"
