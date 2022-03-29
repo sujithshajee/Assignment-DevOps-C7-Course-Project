@@ -52,6 +52,7 @@ Note the output variables at the end of the script execution
 
 - Login to app-host-instance and configure aws by running command aws configure
     - Use access credentials with ecr access
+- Run docker login –u AWS –p $(aws ecr get-login-password) --region us-east-1 https://aws_account_id.dkr.ecr.us-east-1.amazonaws.com
 - Access Jenkins using the URL: http://<<lb_dns_name>>/jenkins
 - Get the initial setup password from Jenkins instance at location /var/lib/jenkins/secrets/initialAdminPassword
     - ssh -i terraform-key.pem ubuntu@<bastion_public_ip> ssh jenkinsserver 
